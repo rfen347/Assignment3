@@ -32,17 +32,17 @@ public class ViewContactActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_contact);
 		
-	/*	pic = (ImageButton)findViewById(R.id.contact_picture);
+		pic = (ImageButton)findViewById(R.id.contact_picture);
 		edit = (Button)findViewById(R.id.edit_button);
 		back = (Button)findViewById(R.id.back_button);
-		fn = (EditText)findViewById(R.id.view_first_name);
-		ln = (EditText)findViewById(R.id.view_last_name);
-		mp = (EditText)findViewById(R.id.view_mobile_number);
-		hn = (EditText)findViewById(R.id.view_home_number);
-		wn = (EditText)findViewById(R.id.view_work_number);
-		em = (EditText)findViewById(R.id.view_email_address);
-		ad = (EditText)findViewById(R.id.view_home_address);
-		dob = (EditText)findViewById(R.id.view_date_of_birth);*/
+		fn = (TextView)findViewById(R.id.view_first_name);
+		ln = (TextView)findViewById(R.id.view_last_name);
+		mp = (TextView)findViewById(R.id.view_mobile_number);
+		hn = (TextView)findViewById(R.id.view_home_number);
+		wn = (TextView)findViewById(R.id.view_work_number);
+		em = (TextView)findViewById(R.id.view_email_address);
+		ad = (TextView)findViewById(R.id.view_home_address);
+		dob = (TextView)findViewById(R.id.view_date_of_birth);
 		
 		Intent intent = getIntent();
 		contact = (Contact) intent.getSerializableExtra("contact");
