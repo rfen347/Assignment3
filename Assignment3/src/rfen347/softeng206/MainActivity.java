@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 			}
 		})
 		;
-		
+	
 		deleteContact.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
