@@ -47,14 +47,14 @@ public class ViewContactActivity extends Activity {
 		Intent intent = getIntent();
 		contact = (Contact) intent.getSerializableExtra("contact");
 		
-	/*	fn.setText(contact.getFirstName());
+		fn.setText(contact.getFirstName());
 		ln.setText(contact.getLastName());
 		mp.setText(contact.getMobile());
 		hn.setText(contact.getHome());
 		wn.setText(contact.getWork());
 		em.setText(contact.getEmail());
 		ad.setText(contact.getAddress());
-		dob.setText(contact.getDob());*/
+		dob.setText(contact.getDob());
 		
 		
 		
