@@ -9,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class EditContactActivity extends Activity {
 	public DatabaseHandler db = new DatabaseHandler(this);
@@ -54,7 +55,46 @@ public class EditContactActivity extends Activity {
 		editad.setText(contact.getAddress(),TextView.BufferType.EDITABLE);
 		editdob.setText(contact.getDob(),TextView.BufferType.EDITABLE);
 		
+		cancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.setClass(EditContactActivity.this, MainActivity.class);
+				startActivity(intent);
+				
+			}
+		})
+		;
 		
+		save.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String fn = editfn.getText().toString();
+				String ln = editln.getText().toString();
+				String mp = editmp.getText().toString();
+				String hn = edithn.getText().toString();
+				String wn = editwn.getText().toString();
+				String em = editem.getText().toString();
+				String ad = editad.getText().toString();
+				String dob = editdob.getText().toString();
+				
+				contact.set_firstName(fn);
+				contact.set_lastName(ln);
+				contact.set_mobile(mp);
+				contact.set_home(hn);
+				contact.set_work(wn);
+				contact.set_email(em);
+				contact.set_address(ad);
+				contact.set_dob(dob);
+				db.updateContact(contact);
+				String displayString = "Contact Updated";
+				Toast.makeText(save.getContext(), displayString, Toast.LENGTH_LONG).show();
+				Intent intent = new Intent();
+				intent.setClass(EditContactActivity.this, MainActivity.class);
+				startActivity(intent);
+			}
+		})
+		;
 		
 	
 		
