@@ -44,8 +44,8 @@ public class ViewContactActivity extends Activity {
 		ad = (EditText)findViewById(R.id.view_home_address);
 		dob = (EditText)findViewById(R.id.view_date_of_birth);*/
 		
-	//	Intent intent = getIntent();
-	//	contact = (Contact) intent.getSerializableExtra("contact");
+		Intent intent = getIntent();
+		contact = (Contact) intent.getSerializableExtra("contact");
 		
 	/*	fn.setText(contact.getFirstName());
 		ln.setText(contact.getLastName());
@@ -58,7 +58,7 @@ public class ViewContactActivity extends Activity {
 		
 		
 		
-		back.setOnClickListener(new View.OnClickListener() {
+	/*	back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 
@@ -67,7 +67,7 @@ public class ViewContactActivity extends Activity {
 				startActivity(intent);
 			}
 		})
-		;
+		;*/
 		
 	}
 
