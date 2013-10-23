@@ -55,7 +55,7 @@ public class MainActivity extends Activity {
 			}
 		})
 		;
-	
+		
 		deleteContact.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -95,13 +95,10 @@ public class MainActivity extends Activity {
 		//displays a string on what you clicked
 		@Override
 		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id) {
-			// TODO Auto-generated method stub
-			Contact selectedContact = db.getAllContacts().get(clickedViewPosition);
-			db.deleteContact(selectedContact);
+			Intent intent = new Intent();
+			intent.setClass(MainActivity.this, ViewContactActivity.class);
+			startActivity(intent);
 			
-			//String displayString = selectedContact.getFirstName() + " " + selectedContact.getLastName() + "\nMobile Number:" + selectedContact.getMobile() +"\nHome Number:" + selectedContact.getHome() + "\nWork Number:" + selectedContact.getWork();
-			//Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_LONG).show();
-			setupListView();
 			}
 		
 	}
