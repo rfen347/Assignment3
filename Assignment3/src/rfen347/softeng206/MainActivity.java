@@ -3,6 +3,8 @@ package rfen347.softeng206;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 //
@@ -26,6 +28,7 @@ import android.widget.Toast;
 
 public class MainActivity extends Activity {
 	public DatabaseHandler db = new DatabaseHandler(this);
+	private List<Contact> contacts;
 	private Button addContact;
 	private Button deleteContact;
 	private Button sortFirst;
@@ -35,6 +38,7 @@ public class MainActivity extends Activity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
@@ -45,6 +49,8 @@ public class MainActivity extends Activity {
 		sortLast= (Button)findViewById(R.id.sort_last_button);
 		sortNum = (Button)findViewById(R.id.sort_num_button);
 		listView = (ListView)findViewById(R.id.main_listview);
+		
+		contacts = db.getAllContacts();
 		setupListView();
 		
 		addContact.setOnClickListener(new View.OnClickListener() {
@@ -71,22 +77,32 @@ public class MainActivity extends Activity {
 		sortFirst.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Intent intent = new Intent();
-				intent.setClass(MainActivity.this, SortContactActivity.class);
-				startActivity(intent);
+				contacts = db.getAllContacts();
+				Collections.sort(contacts, new Comparator<Contact>(){
+
+					@Override
+					public int compare(Contact c1, Contact c2) {
+						// TODO Auto-generated method stub
+						return c1.getFirstName().toLowerCase().compareTo(c2.getFirstName().toLowerCase());
+}
+					
+				});
 				
-			}
+				
+			setupListView();}
 		})
 		;
-	}
-	
-	
-
-	ContactList c = new ContactList();
-	private void setupListView(){
-
 		
-		ListAdapter listAdapter = new CustomListAdapter(MainActivity.this, db.getAllContacts());
+	
+	
+	}
+			
+	
+	
+
+	private void setupListView(){
+		
+		ListAdapter listAdapter = new CustomListAdapter(MainActivity.this, contacts);
 		listView.setAdapter(listAdapter);
 		
 		listView.setOnItemClickListener(new ListItemClickedListener());
@@ -97,11 +113,11 @@ public class MainActivity extends Activity {
 		//displays a string on what you clicked
 		@Override
 		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id) {
-			Contact selectedContact = db.getAllContacts().get(clickedViewPosition);
+			Contact selectedContact = contacts.get(clickedViewPosition);
 			String displayString = selectedContact.getFirstName() + " " + selectedContact.getLastName() + "\nMobile Number:" + selectedContact.getMobile() +"\nHome Number:" + selectedContact.getHome() + "\nWork Number:" + selectedContact.getWork();
 			Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_LONG).show();
 			Intent intent = new Intent();
-			intent.putExtra("contact", db.getAllContacts().get(clickedViewPosition));
+			intent.putExtra("contact", contacts.get(clickedViewPosition));
 			intent.setClass(MainActivity.this, ViewContactActivity.class);
 			startActivity(intent);
 			
