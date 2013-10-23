@@ -13,6 +13,8 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
@@ -20,8 +22,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,24 +38,31 @@ public class MainActivity extends Activity {
 	private Button sortFirst;
 	private Button sortLast;
 	private Button sortNum;
+	private Button sortDat;
+	private EditText search;
 	private ListView listView;
+	int textlength = 0;
+
+	ArrayList<String> text_sort = new ArrayList<String>();
+	ArrayList<Integer> image_sort = new ArrayList<Integer>();
+	ArrayList<Integer> id_list = new ArrayList<Integer>();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
-		
+		search = (EditText)findViewById(R.id.search);
 		addContact= (Button)findViewById(R.id.add_contact_button);
 		deleteContact= (Button)findViewById(R.id.delete_contact_button);
 		sortFirst= (Button)findViewById(R.id.sort_first_button);
 		sortLast= (Button)findViewById(R.id.sort_last_button);
 		sortNum = (Button)findViewById(R.id.sort_num_button);
+		sortDat = (Button)findViewById(R.id.sort_date_button);
 		listView = (ListView)findViewById(R.id.main_listview);
 		
 		contacts = db.getAllContacts();
-		setupListView();
+		setupListView(contacts);
 		
 		addContact.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -89,7 +100,7 @@ public class MainActivity extends Activity {
 				});
 				
 				
-			setupListView();}
+			setupListView(contacts);}
 		})
 		;
 		
@@ -109,7 +120,7 @@ public class MainActivity extends Activity {
 				});
 				
 				
-			setupListView();}
+			setupListView(contacts);}
 		})
 		;
 		
@@ -129,23 +140,69 @@ public class MainActivity extends Activity {
 				});
 				
 				
-			setupListView();}
+			setupListView(contacts);}
 		})
 		;
 		
+		sortDat.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+			contacts = db.getAllContacts();
+			setupListView(contacts);}
+		})
+		;
+		search.addTextChangedListener(new TextWatcher() {
+            
+	           @Override
+	           public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+	               // When user changed the Text
+	        	   textlength = search.getText().length();
+	        	   text_sort.clear();
+	        	   id_list.clear();
+	        	   image_sort.clear();
+	        	   List<Contact> c = new ArrayList<Contact>();
+	        	   
+	        	   for (int i = 0; i < contacts.size(); i++) {
+	        		     if (textlength <=contacts.get(i).getFirstName().length()) {
+	        		    	if (search.getText().toString().equalsIgnoreCase((String) contacts.get(i).getFirstName().subSequence(0, textlength))){
+	        		    		c.add(db.getAllContacts().get(i));
+	        		    	}
+	        		    	
+	        		     }
+	        		     
+	        	   }
+	       
+	        	   setupListView(c);
+	           }
+	           @Override
+	           public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
+	                   int arg3) {
+	               // TODO Auto-generated method stub
+	                
+	           }
+	            
+	           @Override
+	           public void afterTextChanged(Editable arg0) {
+	               // TODO Auto-generated method stub                          
+	           }
+	       });
+	   }   
+		
+		
 	
 	
-	}
 			
 	
 	
 
-	private void setupListView(){
-		
+	private void setupListView(List<Contact> contacts){
 		ListAdapter listAdapter = new CustomListAdapter(MainActivity.this, contacts);
 		listView.setAdapter(listAdapter);
 		
 		listView.setOnItemClickListener(new ListItemClickedListener());
+		
+		
+		
 	}
 	
 	class ListItemClickedListener implements AdapterView.OnItemClickListener{
@@ -154,8 +211,8 @@ public class MainActivity extends Activity {
 		@Override
 		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id) {
 			Contact selectedContact = contacts.get(clickedViewPosition);
-			String displayString = selectedContact.getFirstName() + " " + selectedContact.getLastName() + "\nMobile Number:" + selectedContact.getMobile() +"\nHome Number:" + selectedContact.getHome() + "\nWork Number:" + selectedContact.getWork();
-			Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_LONG).show();
+		/*	String displayString = selectedContact.getFirstName() + " " + selectedContact.getLastName() + "\nMobile Number:" + selectedContact.getMobile() +"\nHome Number:" + selectedContact.getHome() + "\nWork Number:" + selectedContact.getWork();
+			Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_LONG).show();*/
 			Intent intent = new Intent();
 			intent.putExtra("contact", contacts.get(clickedViewPosition));
 			intent.setClass(MainActivity.this, ViewContactActivity.class);
@@ -167,7 +224,6 @@ public class MainActivity extends Activity {
 	private class CustomListAdapter extends ArrayAdapter<Contact>{
 		private Context context;
 		private List<Contact> contacts;
-		
 		CustomListAdapter(Context context, List<Contact> contact){
 			super(context, android.R.layout.simple_list_item_1, contact);
 			
