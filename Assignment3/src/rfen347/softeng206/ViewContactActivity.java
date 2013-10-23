@@ -57,19 +57,26 @@ public class ViewContactActivity extends Activity {
 		dob.setText(contact.getDob());
 		
 		
-		
-	/*	back.setOnClickListener(new View.OnClickListener() {
+		back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
 				Intent intent = new Intent();
 				intent.setClass(ViewContactActivity.this, MainActivity.class);
 				startActivity(intent);
 			}
-		})
-		;*/
+		});
 		
-	}
+		edit.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent();
+				intent.putExtra("contact2", db.getContact(contact.get_id()));
+				intent.setClass(ViewContactActivity.this, EditContactActivity.class);
+				startActivity(intent);
+			}
+		});
+		
+		}	
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
