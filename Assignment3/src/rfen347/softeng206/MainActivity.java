@@ -95,7 +95,11 @@ public class MainActivity extends Activity {
 		//displays a string on what you clicked
 		@Override
 		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id) {
+			Contact selectedContact = db.getAllContacts().get(clickedViewPosition);
+			String displayString = selectedContact.getFirstName() + " " + selectedContact.getLastName() + "\nMobile Number:" + selectedContact.getMobile() +"\nHome Number:" + selectedContact.getHome() + "\nWork Number:" + selectedContact.getWork();
+			Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_LONG).show();
 			Intent intent = new Intent();
+		//	intent.putExtra("contact", db.getAllContacts().get(clickedViewPosition));
 			intent.setClass(MainActivity.this, ViewContactActivity.class);
 			startActivity(intent);
 			
