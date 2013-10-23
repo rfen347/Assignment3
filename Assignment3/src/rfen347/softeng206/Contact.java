@@ -1,7 +1,10 @@
 package rfen347.softeng206; 
+
+import java.io.Serializable;
  
-public class Contact {
+public class Contact implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
 	private int _id;
 	private String _firstName;
 	private String _lastName;

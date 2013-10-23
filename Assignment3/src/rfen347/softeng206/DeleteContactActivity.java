@@ -73,7 +73,7 @@ public class DeleteContactActivity extends Activity {
 							db.deleteContact(contact);
 						}
 						
-						String displayString = "Contact(s) deleted";
+						String displayString = "Contacts deleted";
 						Toast.makeText(deleteContact.getContext(), displayString, Toast.LENGTH_LONG).show();
 						Intent intent = new Intent();
 						intent.setClass(DeleteContactActivity.this, MainActivity.class);
