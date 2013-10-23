@@ -93,6 +93,46 @@ public class MainActivity extends Activity {
 		})
 		;
 		
+		
+		sortLast.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				contacts = db.getAllContacts();
+				Collections.sort(contacts, new Comparator<Contact>(){
+
+					@Override
+					public int compare(Contact c1, Contact c2) {
+						// TODO Auto-generated method stub
+						return c1.getLastName().toLowerCase().compareTo(c2.getLastName().toLowerCase());
+}
+					
+				});
+				
+				
+			setupListView();}
+		})
+		;
+		
+		
+		sortNum.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				contacts = db.getAllContacts();
+				Collections.sort(contacts, new Comparator<Contact>(){
+
+					@Override
+					public int compare(Contact c1, Contact c2) {
+						// TODO Auto-generated method stub
+						return c1.getMobile().toLowerCase().compareTo(c2.getMobile().toLowerCase());
+}
+					
+				});
+				
+				
+			setupListView();}
+		})
+		;
+		
 	
 	
 	}
