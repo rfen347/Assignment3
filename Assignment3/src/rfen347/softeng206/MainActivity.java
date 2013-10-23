@@ -28,8 +28,9 @@ public class MainActivity extends Activity {
 	public DatabaseHandler db = new DatabaseHandler(this);
 	private Button addContact;
 	private Button deleteContact;
-	private Button editContact;
-	private Button sortContact;
+	private Button sortFirst;
+	private Button sortLast;
+	private Button sortNum;
 	private ListView listView;
 
 	@Override
@@ -40,8 +41,9 @@ public class MainActivity extends Activity {
 		
 		addContact= (Button)findViewById(R.id.add_contact_button);
 		deleteContact= (Button)findViewById(R.id.delete_contact_button);
-		editContact= (Button)findViewById(R.id.edit_contact_button);
-		sortContact= (Button)findViewById(R.id.sort_contact_button);
+		sortFirst= (Button)findViewById(R.id.sort_first_button);
+		sortLast= (Button)findViewById(R.id.sort_last_button);
+		sortNum = (Button)findViewById(R.id.sort_num_button);
 		listView = (ListView)findViewById(R.id.main_listview);
 		setupListView();
 		
@@ -66,7 +68,7 @@ public class MainActivity extends Activity {
 			}
 		})
 		;
-		sortContact.setOnClickListener(new View.OnClickListener() {
+		sortFirst.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
