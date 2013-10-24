@@ -25,26 +25,29 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+//DeleteContactActivity allows user to delete contacts from list
 public class DeleteContactActivity extends Activity {
+	//fields
 	public DatabaseHandler db = new DatabaseHandler(this);
 	private Button deleteContact;
 	private Button cancel;
 	private ListView listView;
 	private CheckBox checkbox;
+	private Contact selectedContact;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_delete_contact);
-		
+		//Reference layout xml to contact
 		deleteContact= (Button)findViewById(R.id.delete2_contact_button);
 		cancel = (Button)findViewById(R.id.cancel_contact_button);
 		listView = (ListView)findViewById(R.id.delete_listview);
 	
-		
+		//sets up the ListView
 		setupListView();
 		
+		//cancel sends user back to the MainActivity
 		cancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -55,10 +58,12 @@ public class DeleteContactActivity extends Activity {
 			}
 		})
 		;
+		//deleteContact deletes ALL CONTACTS from the database and updates the list
+		//contains a dialogue box asking whether user would like to delete
 		deleteContact.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+
 				AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(DeleteContactActivity.this);
 				
 				dialogBuilder.setTitle("Are you sure you wish to remove contact(s)?");
@@ -69,6 +74,7 @@ public class DeleteContactActivity extends Activity {
 					@Override
 					public void onClick(DialogInterface arg0, int arg1){ 
 						List<Contact> cl = db.getAllContacts();
+						//iterate through all the contacts and delete from database
 						for(Contact contact: db.getAllContacts()){
 							db.deleteContact(contact);
 						}
@@ -93,6 +99,7 @@ public class DeleteContactActivity extends Activity {
 
 	ContactList c = new ContactList();
 	private void setupListView(){
+		//sets up the listView using adapter
 		ListAdapter listAdapter = new CustomListAdapter(DeleteContactActivity.this, db.getAllContacts());
 		
 		listView.setAdapter(listAdapter);
@@ -101,14 +108,13 @@ public class DeleteContactActivity extends Activity {
 	
 	class ListItemClickedListener implements AdapterView.OnItemClickListener{
 
-		//displays a string on what you clicked
+		//Everytime an item is clicked, the selectedContact gets deleted
 		@Override
 		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id) {
+			
 			Contact selectedContact = db.getAllContacts().get(clickedViewPosition);
 			db.deleteContact(selectedContact);
-			
-			//String displayString = selectedContact.getFirstName() + " " + selectedContact.getLastName() + "\nMobile Number:" + selectedContact.getMobile() +"\nHome Number:" + selectedContact.getHome() + "\nWork Number:" + selectedContact.getWork();
-			//Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_LONG).show();
+		
 			setupListView();
 		}
 		
@@ -147,13 +153,6 @@ public class DeleteContactActivity extends Activity {
 			fn.setText(contacts.get(position).getFirstName());
 			ln.setText(contacts.get(position).getLastName());
 			dob.setText(contacts.get(position).getMobile());
-			
-			
-			/*if (contacts.get(position).isSelected()) {
-				checkbx = (chckbkx) findvewl
-				checkbox.setChecked(true);
-			}*/
-			
 			
 			
 			return listItemView;
