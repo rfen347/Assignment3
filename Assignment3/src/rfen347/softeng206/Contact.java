@@ -1,10 +1,15 @@
 package rfen347.softeng206; 
 
 import java.io.Serializable;
+
+import android.graphics.Bitmap;
  
+//a contact class that represents the object of the contact that the user wants to add
 public class Contact implements Serializable {
-	
+	//Serializable allows contact to be passed from different activities using intent.
 	private static final long serialVersionUID = 1L;
+	private Bitmap picture;
+	//the fields inside the contact
 	private int _id;
 	private String _firstName;
 	private String _lastName;
@@ -14,7 +19,6 @@ public class Contact implements Serializable {
 	private String _email;
 	private String _address;
 	private String _dob;
-	private boolean selected = false;
 	
 	
 	public Contact(){
@@ -33,7 +37,21 @@ public class Contact implements Serializable {
 		this._address = adrs;
 		this._dob = dob;
 	}
-	//contact with main features
+	//Contact with picture
+	Contact(Bitmap b, String fn, String ln, String mb, String hm, String wk, String em, String adrs, String dob){
+		this._firstName = fn;
+		this._lastName = ln;
+		this._mobile = mb;
+		this._home = hm;
+		this._work = wk;
+		this._email = em;
+		this._address = adrs;
+		this._dob = dob;
+		this.picture = b;
+		
+	}
+	
+	//contact without picture
 	Contact(String fn, String ln, String mb, String hm, String wk, String em, String adrs, String dob){
 		this._firstName = fn;
 		this._lastName = ln;
@@ -44,40 +62,9 @@ public class Contact implements Serializable {
 		this._address = adrs;
 		this._dob = dob;
 	}
-	//Contact - dob
-	Contact(String fn, String ln, String mb, String hm, String wk, String em, String adrs){
-		this._firstName = fn;
-		this._lastName = ln;
-		this._mobile = mb;
-		this._home = hm;
-		this._work = wk;
-		this._email = em;
-		this._address = adrs;
-	}
-	//Contact - dob - address
-	Contact(String fn, String ln, String mb, String hm, String wk, String em){
-		this._firstName = fn;
-		this._lastName = ln;
-		this._mobile = mb;
-		this._home = hm;
-		this._work = wk;
-		this._email = em;
-	}
-	//Contact - dob - address - email
-	Contact( String fn, String ln, String mb, String hm, String wk){
-		this._firstName = fn;
-		this._lastName = ln;
-		this._mobile = mb;
-		this._home = hm;
-		this._work = wk;
-	}
-	//Contact - dob - address - email - work
-	Contact(String fn, String ln, String mb, String hm){
-		this._firstName = fn;
-		this._lastName = ln;
-		this._mobile = mb;
-		this._home = hm;
-	}
+	
+		
+	//The following methods are getters and setters used for get and set the fields of contact
 	public void set_id(int _id) {
 		this._id = _id;
 	}
@@ -113,13 +100,12 @@ public class Contact implements Serializable {
 	public void set_dob(String _dob) {
 		this._dob = _dob;
 	}
+	public Bitmap getPicture() {
+		return picture;
+	}
 
-	//Contact - dob - address - email - work - home
-	Contact(int id, String fn, String ln, String mb){
-		this._id = id;
-		this._firstName = fn;
-		this._lastName = ln;
-		this._mobile = mb;
+	public void setPicture(Bitmap picture) {
+		this.picture = picture;
 	}
 	
 	
@@ -161,12 +147,4 @@ public class Contact implements Serializable {
 		return this._dob;
 	}
 	
-	
-	
-	public boolean isSelected(){
-		return selected;
-	}
-	public void setSelected(boolean selected){
-		this.selected = selected;
-	}
 }
