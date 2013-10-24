@@ -42,6 +42,9 @@ public class MainActivity extends Activity {
 	private EditText search;
 	private ListView listView;
 	int textlength = 0;
+	
+	//john
+	private List<Contact> c = null;
 
 	ArrayList<String> text_sort = new ArrayList<String>();
 	ArrayList<Integer> image_sort = new ArrayList<Integer>();
@@ -160,8 +163,8 @@ public class MainActivity extends Activity {
 	        	   text_sort.clear();
 	        	   id_list.clear();
 	        	   image_sort.clear();
-	        	   List<Contact> c = new ArrayList<Contact>();
-	        	   
+	        	   //List<Contact> c = new ArrayList<Contact>();
+	        	   c = new ArrayList<Contact>();
 	        	   for (int i = 0; i < contacts.size(); i++) {
 	        		     if (textlength <=contacts.get(i).getFirstName().length()) {
 	        		    	if (search.getText().toString().equalsIgnoreCase((String) contacts.get(i).getFirstName().subSequence(0, textlength))){
@@ -173,6 +176,8 @@ public class MainActivity extends Activity {
 	        	   }
 	       
 	        	   setupListView(c);
+	        	   
+	        	   
 	           }
 	           @Override
 	           public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
@@ -214,7 +219,11 @@ public class MainActivity extends Activity {
 		/*	String displayString = selectedContact.getFirstName() + " " + selectedContact.getLastName() + "\nMobile Number:" + selectedContact.getMobile() +"\nHome Number:" + selectedContact.getHome() + "\nWork Number:" + selectedContact.getWork();
 			Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_LONG).show();*/
 			Intent intent = new Intent();
-			intent.putExtra("contact", contacts.get(clickedViewPosition));
+			if (c != null) {
+			intent.putExtra("contact", c.get(clickedViewPosition));
+			} else {
+				intent.putExtra("contact", contacts.get(clickedViewPosition));
+			}
 			intent.setClass(MainActivity.this, ViewContactActivity.class);
 			startActivity(intent);
 			
