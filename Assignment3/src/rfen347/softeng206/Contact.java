@@ -25,7 +25,7 @@ public class Contact implements Serializable {
         
     }
 	
-	//Contact with full details (includes id)
+	//Contact without picture (includes id)
 	Contact(int id, String fn, String ln, String mb, String hm, String wk, String em, String adrs, String dob){
 		this._id = id;
 		this._firstName = fn;
@@ -37,7 +37,7 @@ public class Contact implements Serializable {
 		this._address = adrs;
 		this._dob = dob;
 	}
-	//Contact with picture
+	//Contact with picture + id
 	Contact(int id, String fn, String ln, String mb, String hm, String wk, String em, String adrs, String dob, byte[] b){
 		this._id = id;
 		this._firstName = fn;
@@ -51,6 +51,7 @@ public class Contact implements Serializable {
 		this.picture = b;
 		
 	}
+	//Contact with picture
 	Contact(String fn, String ln, String mb, String hm, String wk, String em, String adrs, String dob, byte[] b){
 		this._firstName = fn;
 		this._lastName = ln;

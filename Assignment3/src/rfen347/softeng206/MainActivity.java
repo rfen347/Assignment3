@@ -83,6 +83,7 @@ public class MainActivity extends Activity {
 				//switch activity
 				intent.setClass(MainActivity.this, AddContactActivity.class);
 				startActivity(intent);
+				finish();
 				
 			}
 		})
@@ -96,7 +97,7 @@ public class MainActivity extends Activity {
 				//switch activity
 				intent.setClass(MainActivity.this, DeleteContactActivity.class);
 				startActivity(intent);
-				
+				finish();
 			}
 		})
 		;
@@ -249,7 +250,7 @@ public class MainActivity extends Activity {
 			//switch screen to the View Contact screen
 			intent.setClass(MainActivity.this, ViewContactActivity.class);
 			startActivity(intent);
-			
+			finish();
 			}
 		
 	}
@@ -293,3 +294,4 @@ public class MainActivity extends Activity {
 	
 
 }
+

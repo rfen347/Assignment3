@@ -71,18 +71,12 @@ public class AddContactActivity extends Activity {
 				String ad = editad.getText().toString();
 				String dob = editdob.getText().toString();
 				
-				
-				Contact contactToAdd = new Contact(fn, ln, mp, hn, wn, em, ad, dob, db.getByteArray(bitmap));
-				//This is for the picture
-				//If the picture does not exist, add the picture
-			/*	if (contactToAdd.getPicture() == null) {
-					System.out.println("###bad field, tryig again");
-					b = picture.getDrawingCache(true);
-					contactToAdd.setPicture(b);
-				} else {
-					System.out.println("###good field");
-				}*/
-				//add the contact into database
+				byte[] cbytes = new byte[]{};
+				if (bitmap != null) {
+					cbytes = db.getByteArray(bitmap);
+				}
+				Contact contactToAdd = new Contact(fn, ln, mp, hn, wn, em, ad, dob, cbytes);
+		
 				db.addContact(contactToAdd);
 				
 				
@@ -90,6 +84,7 @@ public class AddContactActivity extends Activity {
 				Intent intent = new Intent();
 				intent.setClass(AddContactActivity.this, MainActivity.class);
 				startActivity(intent);
+				finish();
 				String displayString = "Contact Added";
 				Toast.makeText(save.getContext(), displayString, Toast.LENGTH_LONG).show();
 			}
@@ -102,7 +97,7 @@ public class AddContactActivity extends Activity {
 				Intent intent = new Intent();
 				intent.setClass(AddContactActivity.this, MainActivity.class);
 				startActivity(intent);
-				
+				finish();
 			}
 		})
 		;
@@ -122,25 +117,26 @@ public class AddContactActivity extends Activity {
 		;
 		
 	}
+	
 	@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-         
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+    protected void onActivityResult(int requestC, int resultC, Intent data) {
+        super.onActivityResult(requestC, resultC, data);
+         //if the triggered activity was indeed image gallery
+        if (requestC == RESULT_LOAD_IMAGE && resultC == RESULT_OK && null != data) {
+            Uri selectedpic = data.getData();
+            String[] fpColumn = { MediaStore.Images.Media.DATA };
  
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
+            Cursor cursor = getContentResolver().query(selectedpic,
+                    fpColumn, null, null, null);
             cursor.moveToFirst();
- 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
+            //gets picture from the column index
+            int columnIndex = cursor.getColumnIndex(fpColumn[0]);
+            String path = cursor.getString(columnIndex);
             cursor.close();
             
             BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inSampleSize = 10;
-            bitmap = BitmapFactory.decodeFile(picturePath, options);
+            bitmap = BitmapFactory.decodeFile(path, options);
             picture.setImageBitmap(bitmap);
          
         }

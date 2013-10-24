@@ -69,7 +69,7 @@ public class EditContactActivity extends Activity {
 		if (contact.getPicture().length > 0) {
 			picture.setImageBitmap(db.getBitmap(contact.getPicture()));
 		}
-		
+	
 		//sends the user back to the MainActivity
 		cancel.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -77,6 +77,7 @@ public class EditContactActivity extends Activity {
 				Intent intent = new Intent();
 				intent.setClass(EditContactActivity.this, MainActivity.class);
 				startActivity(intent);
+				finish();
 				
 			}
 		})
@@ -115,6 +116,7 @@ public class EditContactActivity extends Activity {
 				//go back to MainActivity
 				intent.setClass(EditContactActivity.this, MainActivity.class);
 				startActivity(intent);
+				finish();
 			}
 		})
 		;
@@ -136,28 +138,27 @@ public class EditContactActivity extends Activity {
 		
 	}
 	@Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-         
-        if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK && null != data) {
-            Uri selectedImage = data.getData();
-            String[] filePathColumn = { MediaStore.Images.Media.DATA };
+	 protected void onActivityResult(int requestC, int resultC, Intent data) {
+        super.onActivityResult(requestC, resultC, data);
+         //if the triggered activity was indeed image gallery
+        if (requestC == RESULT_LOAD_IMAGE && resultC == RESULT_OK && null != data) {
+            Uri selectedpic = data.getData();
+            String[] fpColumn = { MediaStore.Images.Media.DATA };
  
-            Cursor cursor = getContentResolver().query(selectedImage,
-                    filePathColumn, null, null, null);
+            Cursor cursor = getContentResolver().query(selectedpic,
+                    fpColumn, null, null, null);
             cursor.moveToFirst();
- 
-            int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
-            String picturePath = cursor.getString(columnIndex);
+            //gets picture from the column index
+            int columnIndex = cursor.getColumnIndex(fpColumn[0]);
+            String path = cursor.getString(columnIndex);
             cursor.close();
             
             BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inSampleSize = 10;
-            bitmap = BitmapFactory.decodeFile(picturePath, options);
+            bitmap = BitmapFactory.decodeFile(path, options);
             picture.setImageBitmap(bitmap);
          
         }
-
 	}
 	
 	@Override

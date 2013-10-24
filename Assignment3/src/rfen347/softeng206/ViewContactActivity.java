@@ -62,12 +62,7 @@ public class ViewContactActivity extends Activity {
 		if (contact.getPicture() != null){
 			if (contact.getPicture().length > 0) {
 				pic.setImageBitmap(db.getBitmap(contact.getPicture()));
-			} else {
-				System.out.println("###fock len 0 but its okay");
 			}
-			//System.out.println("###good, size: " + contact.getPicture().getHeight());
-		} else {
-			System.out.println("###failed");
 		}
 		//goes back to main activity
 		back.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +71,7 @@ public class ViewContactActivity extends Activity {
 				Intent intent = new Intent();
 				intent.setClass(ViewContactActivity.this, MainActivity.class);
 				startActivity(intent);
+				finish();
 			}
 		});
 		//edit sends user to EditContactActivity and passes the information of this contact
@@ -87,6 +83,7 @@ public class ViewContactActivity extends Activity {
 				intent.putExtra("contact2", db.getContact(contact.get_id()));
 				intent.setClass(ViewContactActivity.this, EditContactActivity.class);
 				startActivity(intent);
+				finish();
 			}
 		});
 		

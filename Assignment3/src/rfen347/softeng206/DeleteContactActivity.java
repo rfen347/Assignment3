@@ -54,6 +54,7 @@ public class DeleteContactActivity extends Activity {
 				Intent intent = new Intent();
 				intent.setClass(DeleteContactActivity.this, MainActivity.class);
 				startActivity(intent);
+				finish();
 				
 			}
 		})
@@ -84,6 +85,7 @@ public class DeleteContactActivity extends Activity {
 						Intent intent = new Intent();
 						intent.setClass(DeleteContactActivity.this, MainActivity.class);
 						startActivity(intent);
+						finish();
 					}
 				});
 				dialogBuilder.setCancelable(true);
@@ -97,7 +99,6 @@ public class DeleteContactActivity extends Activity {
 
 	}
 
-	ContactList c = new ContactList();
 	private void setupListView(){
 		//sets up the listView using adapter
 		ListAdapter listAdapter = new CustomListAdapter(DeleteContactActivity.this, db.getAllContacts());

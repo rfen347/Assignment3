@@ -17,7 +17,7 @@ import android.graphics.BitmapFactory;
 //This is where all the contacts get stored into for use
 public class DatabaseHandler extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 5;
     // Database Name
     private static final String DATABASE_NAME = "contactsManager";
     // Contacts table name
@@ -174,13 +174,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         return cursor.getCount();
     }
-    
+    //getss the byte array of a bitmap
 	public byte[] getByteArray(Bitmap bitmap) {
 	    ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	    bitmap.compress(CompressFormat.PNG, 0, bos);
 	    return bos.toByteArray();
 	}
-	
+	//gets the bitmap of a byte array
 	public Bitmap getBitmap(byte[] array) {
 		if (array.length > 0) {
 			return BitmapFactory.decodeByteArray(array , 0, array.length);
