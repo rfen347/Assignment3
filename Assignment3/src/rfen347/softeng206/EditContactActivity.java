@@ -10,8 +10,9 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
-
+//EditContactActivity allows you to edit contact
 public class EditContactActivity extends Activity {
+	//fields 
 	public DatabaseHandler db = new DatabaseHandler(this);
 	private Button save;
 	private Button cancel;
@@ -30,7 +31,7 @@ public class EditContactActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_edit_contact);
-		
+		//Reference the layout xml to its corresponding widgets
 		picture = (ImageButton)findViewById(R.id.add_picture);
 		save = (Button)findViewById(R.id.save_contact_button);
 		cancel = (Button)findViewById(R.id.cancel2_contact_button);
@@ -44,8 +45,9 @@ public class EditContactActivity extends Activity {
 		editdob = (EditText)findViewById(R.id.edit_date_of_birth);
 		
 		Intent intent = getIntent();
+		//get the contact from ViewContactActivity
 		contact = (Contact) intent.getSerializableExtra("contact2");
-		
+		//set the text to be editable by user, but also have it contain the names and numbers.
 		editfn.setText(contact.getFirstName(), TextView.BufferType.EDITABLE);
 		editln.setText(contact.getLastName(),TextView.BufferType.EDITABLE);
 		editmp.setText(contact.getMobile(),TextView.BufferType.EDITABLE);
@@ -54,7 +56,7 @@ public class EditContactActivity extends Activity {
 		editem.setText(contact.getEmail(),TextView.BufferType.EDITABLE);
 		editad.setText(contact.getAddress(),TextView.BufferType.EDITABLE);
 		editdob.setText(contact.getDob(),TextView.BufferType.EDITABLE);
-		
+		//sends the user back to the MainActivity
 		cancel.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -65,10 +67,11 @@ public class EditContactActivity extends Activity {
 			}
 		})
 		;
-		
+		//Saves the content and updates it
 		save.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				//grab the text in the EditText and convert to string
 				String fn = editfn.getText().toString();
 				String ln = editln.getText().toString();
 				String mp = editmp.getText().toString();
@@ -77,7 +80,7 @@ public class EditContactActivity extends Activity {
 				String em = editem.getText().toString();
 				String ad = editad.getText().toString();
 				String dob = editdob.getText().toString();
-				
+				//set the contact's new fields to be the text inside the EditText
 				contact.set_firstName(fn);
 				contact.set_lastName(ln);
 				contact.set_mobile(mp);
@@ -86,10 +89,13 @@ public class EditContactActivity extends Activity {
 				contact.set_email(em);
 				contact.set_address(ad);
 				contact.set_dob(dob);
+				//update the database with this contact
 				db.updateContact(contact);
+				//display message
 				String displayString = "Contact Updated";
 				Toast.makeText(save.getContext(), displayString, Toast.LENGTH_LONG).show();
 				Intent intent = new Intent();
+				//go back to MainActivity
 				intent.setClass(EditContactActivity.this, MainActivity.class);
 				startActivity(intent);
 			}
