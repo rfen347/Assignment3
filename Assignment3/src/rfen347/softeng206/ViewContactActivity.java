@@ -8,14 +8,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
+//Activity that allows you to view the contact
 public class ViewContactActivity extends Activity {
+	//fields
 	public DatabaseHandler db = new DatabaseHandler(this);
 	private Button edit;
 	private Button back;
-	private ImageButton pic;
+	private ImageView pic;
 	private TextView fn;
 	private TextView ln;
 	private TextView mp;
@@ -31,8 +33,8 @@ public class ViewContactActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_view_contact);
-		
-		pic = (ImageButton)findViewById(R.id.contact_picture);
+		//Referencing layout xml to its corresponding widgets
+		pic = (ImageView)findViewById(R.id.contact_picture);
 		edit = (Button)findViewById(R.id.edit_button);
 		back = (Button)findViewById(R.id.back_button);
 		fn = (TextView)findViewById(R.id.view_first_name);
@@ -45,8 +47,9 @@ public class ViewContactActivity extends Activity {
 		dob = (TextView)findViewById(R.id.view_date_of_birth);
 		
 		Intent intent = getIntent();
+		//get the contact that was clicked previously
 		contact = (Contact) intent.getSerializableExtra("contact");
-		
+		//set the text to the contact's details
 		fn.setText(contact.getFirstName());
 		ln.setText(contact.getLastName());
 		mp.setText(contact.getMobile());
@@ -55,8 +58,14 @@ public class ViewContactActivity extends Activity {
 		em.setText(contact.getEmail());
 		ad.setText(contact.getAddress());
 		dob.setText(contact.getDob());
-		
-		
+		//if a picture exists, set the picture
+		if (contact.getPicture() != null){
+			pic.setImageBitmap(contact.getPicture());
+			System.out.println("###good, size: " + contact.getPicture().getHeight());
+		} else {
+			System.out.println("###failed");
+		}
+		//goes back to main activity
 		back.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -65,7 +74,8 @@ public class ViewContactActivity extends Activity {
 				startActivity(intent);
 			}
 		});
-		
+		//edit sends user to EditContactActivity and passes the information of this contact
+		//into the new activity
 		edit.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
