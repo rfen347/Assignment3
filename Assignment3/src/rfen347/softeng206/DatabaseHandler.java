@@ -1,5 +1,6 @@
 package rfen347.softeng206;
  
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
  
@@ -9,12 +10,14 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.graphics.BitmapFactory;
 
 //The DatabaseHandler class handles the database using SQLiteOpenHelper
 //This is where all the contacts get stored into for use
 public class DatabaseHandler extends SQLiteOpenHelper {
     // Database Version
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     // Database Name
     private static final String DATABASE_NAME = "contactsManager";
     // Contacts table name
@@ -44,7 +47,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + KEY_MNUM + " TEXT," + KEY_HNUM + " TEXT," 
                 + KEY_WNUM + " TEXT," + KEY_EMA + " TEXT," 
                 + KEY_ADD + " TEXT," + KEY_DOB + " TEXT," 
-                + KEY_PIC + " TEXT" + ")";
+                + KEY_PIC + " LONGVARBINARY" + ")";
        
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
@@ -73,7 +76,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_EMA, contact.getEmail());
         values.put(KEY_ADD, contact.getAddress());
         values.put(KEY_DOB, contact.getDob());
-
+        
+        values.put(KEY_PIC, contact.getPicture());
         
         // Insert the rows
         db.insert(TABLE_CONTACTS, null, values);
@@ -85,14 +89,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
         
         Cursor cursor = db.query(TABLE_CONTACTS, new String[] { KEY_ID,
-                KEY_FNAME, KEY_LNAME, KEY_MNUM, KEY_HNUM, KEY_WNUM, KEY_EMA, KEY_ADD, KEY_DOB }, KEY_ID + "=?",
+                KEY_FNAME, KEY_LNAME, KEY_MNUM, KEY_HNUM, KEY_WNUM, KEY_EMA, KEY_ADD, KEY_DOB, KEY_PIC }, KEY_ID + "=?",
                 new String[] { String.valueOf(id) }, null, null, null, null);
         //Iterate through the database and get the contact given the id
         if (cursor != null)
             cursor.moveToFirst();
  
         Contact contact = new Contact(Integer.parseInt(cursor.getString(0)),
-                cursor.getString(1), cursor.getString(2), cursor.getString(3), cursor.getString(4), cursor.getString(5), cursor.getString(6), cursor.getString(7), cursor.getString(8));
+                cursor.getString(1), cursor.getString(2), cursor.getString(3), 
+                cursor.getString(4), cursor.getString(5), cursor.getString(6), 
+                cursor.getString(7), cursor.getString(8), cursor.getBlob(9));
         
         return contact;
     }
@@ -119,6 +125,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 contact.set_email(cursor.getString(6));
                 contact.set_address(cursor.getString(7));
                 contact.set_dob(cursor.getString(8));
+                if (cursor.getBlob(9) !=null) {
+                contact.set_picture(cursor.getBlob(9));
+                }
                 // Add each of these contacts into the list contactList
                 contactList.add(contact);
             } while (cursor.moveToNext());
@@ -141,6 +150,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         values.put(KEY_EMA, contact.getEmail());
         values.put(KEY_ADD, contact.getAddress());
         values.put(KEY_DOB, contact.getDob());
+        values.put(KEY_PIC, contact.getPicture());
  
         // update the rows
         return db.update(TABLE_CONTACTS, values, KEY_ID + " = ?",
@@ -164,4 +174,17 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         cursor.close();
         return cursor.getCount();
     }
+    
+	public byte[] getByteArray(Bitmap bitmap) {
+	    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	    bitmap.compress(CompressFormat.PNG, 0, bos);
+	    return bos.toByteArray();
+	}
+	
+	public Bitmap getBitmap(byte[] array) {
+		if (array.length > 0) {
+			return BitmapFactory.decodeByteArray(array , 0, array.length);
+		} 
+		return null;
+	}
 }

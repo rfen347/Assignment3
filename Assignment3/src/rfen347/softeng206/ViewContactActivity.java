@@ -60,8 +60,12 @@ public class ViewContactActivity extends Activity {
 		dob.setText(contact.getDob());
 		//if a picture exists, set the picture
 		if (contact.getPicture() != null){
-			pic.setImageBitmap(contact.getPicture());
-			System.out.println("###good, size: " + contact.getPicture().getHeight());
+			if (contact.getPicture().length > 0) {
+				pic.setImageBitmap(db.getBitmap(contact.getPicture()));
+			} else {
+				System.out.println("###fock len 0 but its okay");
+			}
+			//System.out.println("###good, size: " + contact.getPicture().getHeight());
 		} else {
 			System.out.println("###failed");
 		}

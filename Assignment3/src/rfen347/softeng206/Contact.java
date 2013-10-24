@@ -8,7 +8,7 @@ import android.graphics.Bitmap;
 public class Contact implements Serializable {
 	//Serializable allows contact to be passed from different activities using intent.
 	private static final long serialVersionUID = 1L;
-	private Bitmap picture;
+	private byte[] picture = new byte[]{};
 	//the fields inside the contact
 	private int _id;
 	private String _firstName;
@@ -38,7 +38,8 @@ public class Contact implements Serializable {
 		this._dob = dob;
 	}
 	//Contact with picture
-	Contact(Bitmap b, String fn, String ln, String mb, String hm, String wk, String em, String adrs, String dob){
+	Contact(int id, String fn, String ln, String mb, String hm, String wk, String em, String adrs, String dob, byte[] b){
+		this._id = id;
 		this._firstName = fn;
 		this._lastName = ln;
 		this._mobile = mb;
@@ -50,6 +51,19 @@ public class Contact implements Serializable {
 		this.picture = b;
 		
 	}
+	Contact(String fn, String ln, String mb, String hm, String wk, String em, String adrs, String dob, byte[] b){
+		this._firstName = fn;
+		this._lastName = ln;
+		this._mobile = mb;
+		this._home = hm;
+		this._work = wk;
+		this._email = em;
+		this._address = adrs;
+		this._dob = dob;
+		this.picture = b;
+		
+	}
+	
 	
 	//contact without picture
 	Contact(String fn, String ln, String mb, String hm, String wk, String em, String adrs, String dob){
@@ -100,11 +114,11 @@ public class Contact implements Serializable {
 	public void set_dob(String _dob) {
 		this._dob = _dob;
 	}
-	public Bitmap getPicture() {
+	public byte[] getPicture() {
 		return picture;
 	}
 
-	public void setPicture(Bitmap picture) {
+	public void set_picture(byte[] picture) {
 		this.picture = picture;
 	}
 	

@@ -70,19 +70,18 @@ public class AddContactActivity extends Activity {
 				String em = editem.getText().toString();
 				String ad = editad.getText().toString();
 				String dob = editdob.getText().toString();
-				Bitmap b = picture.getDrawingCache();
 				
 				
-				Contact contactToAdd = new Contact(bitmap, fn, ln, mp, hn, wn, em, ad, dob);
+				Contact contactToAdd = new Contact(fn, ln, mp, hn, wn, em, ad, dob, db.getByteArray(bitmap));
 				//This is for the picture
 				//If the picture does not exist, add the picture
-				if (contactToAdd.getPicture() == null) {
+			/*	if (contactToAdd.getPicture() == null) {
 					System.out.println("###bad field, tryig again");
 					b = picture.getDrawingCache(true);
 					contactToAdd.setPicture(b);
 				} else {
 					System.out.println("###good field");
-				}
+				}*/
 				//add the contact into database
 				db.addContact(contactToAdd);
 				
