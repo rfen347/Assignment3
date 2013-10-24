@@ -29,8 +29,10 @@ import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
+/*This class is where the contacts manager displays the contacts list
+ *It is called as soon as the application is started */
 public class MainActivity extends Activity {
+	//List of fields within the MainActivity
 	public DatabaseHandler db = new DatabaseHandler(this);
 	private List<Contact> contacts;
 	private Button addContact;
@@ -55,6 +57,9 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		/*Reference all the Buttons, EditTexts and ListViews from the layout xml to its corresponding
+		  fields
+		 */
 		search = (EditText)findViewById(R.id.search);
 		addContact= (Button)findViewById(R.id.add_contact_button);
 		deleteContact= (Button)findViewById(R.id.delete_contact_button);
@@ -64,30 +69,45 @@ public class MainActivity extends Activity {
 		sortDat = (Button)findViewById(R.id.sort_date_button);
 		listView = (ListView)findViewById(R.id.main_listview);
 		
+		//Gets all the contacts stored in the database and places them into 'contacts'
 		contacts = db.getAllContacts();
+		//use setupListView method to setup the list view
 		setupListView(contacts);
 		
+		/*adding a listener such that the button responds 
+		 *addContact button switches activity to the AddContactActivity */
 		addContact.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
+				//switch activity
 				intent.setClass(MainActivity.this, AddContactActivity.class);
 				startActivity(intent);
 				
 			}
 		})
 		;
-		
+		/*adding a listener such that the button responds 
+		 *deleteContact button switches activity to the DeleteContactActivity */
 		deleteContact.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent();
+				//switch activity
 				intent.setClass(MainActivity.this, DeleteContactActivity.class);
 				startActivity(intent);
 				
 			}
 		})
 		;
+		//========================================================================
+		/*The following 4 buttons:
+		 * 						sortFirst
+		 * 						sortLast
+		 * 						sortNum
+		 * 						sortDat
+		 	sort the contacts by their First name, Last name, Mobile Phone Number and Date added.
+		 	Uses an onClickListener and a Comparator that compares between the first name, last name and mobile phone numbers*/
 		sortFirst.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -96,18 +116,15 @@ public class MainActivity extends Activity {
 
 					@Override
 					public int compare(Contact c1, Contact c2) {
-						// TODO Auto-generated method stub
+						//sort by first name by comparing c1 to c2
 						return c1.getFirstName().toLowerCase().compareTo(c2.getFirstName().toLowerCase());
 }
-					
-				});
-				
-				
-			setupListView(contacts);}
+				});	
+			setupListView(contacts); //setup the ListView once again
+			}
 		})
 		;
-		
-		
+
 		sortLast.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -116,7 +133,7 @@ public class MainActivity extends Activity {
 
 					@Override
 					public int compare(Contact c1, Contact c2) {
-						// TODO Auto-generated method stub
+						//sort by last name by comparing c1 to c2
 						return c1.getLastName().toLowerCase().compareTo(c2.getLastName().toLowerCase());
 }
 					
@@ -136,7 +153,7 @@ public class MainActivity extends Activity {
 
 					@Override
 					public int compare(Contact c1, Contact c2) {
-						// TODO Auto-generated method stub
+						//sort by mobile by comparing c1 to c2
 						return c1.getMobile().toLowerCase().compareTo(c2.getMobile().toLowerCase());
 }
 					
@@ -154,38 +171,45 @@ public class MainActivity extends Activity {
 			setupListView(contacts);}
 		})
 		;
+		
+		//===============================================================================================
+		/*This feature 'search' allows users to search through the list by their first names*/
 		search.addTextChangedListener(new TextWatcher() {
-            
+			//onTextChanged gets called whenever the user changes input on the search bar.
 	           @Override
 	           public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-	               // When user changed the Text
-	        	   textlength = search.getText().length();
+	        	   textlength = search.getText().length(); //length of the input text
 	        	   text_sort.clear();
 	        	   id_list.clear();
 	        	   image_sort.clear();
-	        	   //List<Contact> c = new ArrayList<Contact>();
-	        	   c = new ArrayList<Contact>();
+	        	   c = new ArrayList<Contact>(); //c is where the list will be stored
+	        	   
 	        	   for (int i = 0; i < contacts.size(); i++) {
+	        		   /*is the length of the input is less than length of the name*/
 	        		     if (textlength <=contacts.get(i).getFirstName().length()) {
+	        		    	 /*if the search equals the subsequence of the user input*/
 	        		    	if (search.getText().toString().equalsIgnoreCase((String) contacts.get(i).getFirstName().subSequence(0, textlength))){
+	        		    		//add the contact into c
 	        		    		c.add(db.getAllContacts().get(i));
 	        		    	}
 	        		    	
 	        		     }
 	        		     
 	        	   }
-	       
+	        	   //setup this new listview by putting in the contact array list c.
 	        	   setupListView(c);
 	        	   
 	        	   
 	           }
+	           
+	           //a method inside the search (not used)
 	           @Override
 	           public void beforeTextChanged(CharSequence arg0, int arg1, int arg2,
 	                   int arg3) {
 	               // TODO Auto-generated method stub
 	                
 	           }
-	            
+	            //a method inside the search (not used)
 	           @Override
 	           public void afterTextChanged(Editable arg0) {
 	               // TODO Auto-generated method stub                          
@@ -193,43 +217,43 @@ public class MainActivity extends Activity {
 	       });
 	   }   
 		
-		
-	
-	
-			
-	
-	
 
+	//this sets up the List view 
 	private void setupListView(List<Contact> contacts){
 		ListAdapter listAdapter = new CustomListAdapter(MainActivity.this, contacts);
 		listView.setAdapter(listAdapter);
-		
+		//setOnItemClickListener allows you to interact with the contacts in the list
 		listView.setOnItemClickListener(new ListItemClickedListener());
 		
 		
 		
 	}
 	
+	//ListItemClickedListener lists and handles what happens when item is clicked.
+	//When item is clicked, the screen changes to ViewContactActivity of the corresponding contact that you clicked
 	class ListItemClickedListener implements AdapterView.OnItemClickListener{
-
-		//displays a string on what you clicked
 		@Override
 		public void onItemClick(AdapterView<?> parentView, View clickedView, int clickedViewPosition, long id) {
+			//get the selected contact by getting its view position
 			Contact selectedContact = contacts.get(clickedViewPosition);
-		/*	String displayString = selectedContact.getFirstName() + " " + selectedContact.getLastName() + "\nMobile Number:" + selectedContact.getMobile() +"\nHome Number:" + selectedContact.getHome() + "\nWork Number:" + selectedContact.getWork();
-			Toast.makeText(clickedView.getContext(), displayString, Toast.LENGTH_LONG).show();*/
+			
 			Intent intent = new Intent();
+			//if c (the list that is created when the search function is called) exists
 			if (c != null) {
+				//pass the clicked contact from 'c' into the intent 'contact'
 			intent.putExtra("contact", c.get(clickedViewPosition));
 			} else {
+				//pass the clicked contact from 'contacts' into the intent 'contact'
 				intent.putExtra("contact", contacts.get(clickedViewPosition));
 			}
+			//switch screen to the View Contact screen
 			intent.setClass(MainActivity.this, ViewContactActivity.class);
 			startActivity(intent);
 			
 			}
 		
 	}
+	//this is a CustomListAdapter that handles the layout of the list
 	private class CustomListAdapter extends ArrayAdapter<Contact>{
 		private Context context;
 		private List<Contact> contacts;
